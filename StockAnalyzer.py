@@ -2,7 +2,8 @@ from yahoo_fin.stock_info import *
 import datetime
 import csv
 
-STD_DEV_MULTIPLIER = 2
+BUY_MULTIPLIER = 1.8
+SELL_MULTIPLIER = 1
 
 
 def calculate_mean(data_list):
@@ -31,7 +32,7 @@ def calculate_std_dev(data_list):
 def days_outside_of_range(adj_closes, mean, std_dev_range):
     days_ago = 0
     for val in reversed(adj_closes):
-        if val > mean + std_dev_range or val < mean - std_dev_range:
+        if mean - std_dev_range < val:
             return days_ago
         days_ago += 1
     return len(adj_closes)
@@ -41,11 +42,10 @@ def get_perc_diff(val1, val2):
     return int((abs(val1 - val2) / (val1 + val2) / 2) * 100)
 
 
-def print_alert(buy_sell, price, mean, stock_strip, days_ago):
-    perc_diff = get_perc_diff(price, mean)
+def print_alert(buy_sell, price, mean, stock_strip, std_dev):
     print('{} alert for {}'.format(buy_sell, stock_strip))
-    print('Price: {:.2f}, Mean: {:.2f}, Difference {}%'.format(price, mean, perc_diff))
-    print('Last within range {} days ago\n'.format(days_ago))
+    print('Price: {:.2f}, Mean: {:.2f}, Difference {}%'.format(price, mean, get_perc_diff(price, mean)))
+    print('Price + std_dev: {:.2f}, Difference {}%'.format(price + std_dev, get_perc_diff(price + std_dev, mean)))
 
 
 def analyze_stock(stock):
@@ -56,51 +56,51 @@ def analyze_stock(stock):
     )
     adj_closes = stock_data.loc[:, 'adjclose'].tolist()
     mean = calculate_mean(adj_closes)
-    std_dev_range = calculate_std_dev(adj_closes) * STD_DEV_MULTIPLIER
-    price = adj_closes[-1]
-    days_ago = days_outside_of_range(adj_closes, mean, std_dev_range)
-    return price, mean, std_dev_range, days_ago
+    std_dev = calculate_std_dev(adj_closes)
+    price = get_live_price(stock)
+    return price, mean, std_dev
 
 
 def analyze_market(stock_list, bought_list):
     for stock in stock_list:
         stock_strip = stock[0].strip()
-        price, mean, std_dev_range, days_ago = analyze_stock(stock_strip)
+        price, mean, std_dev = analyze_stock(stock_strip)
 
-        if price < mean - std_dev_range:
-            print_alert('Buy', price, mean, stock_strip, days_ago)
+        if price < mean - std_dev * BUY_MULTIPLIER:
             stock, shares, bought_at, date = get_bought_info(stock_strip, bought_list)
-            if stock:
-                print('Bought {} shares on {} at {}\n'.format(shares, date, bought_at))
-
-        if price > mean + std_dev_range:
-            stock, shares, bought_at, date = get_bought_info(stock_strip, bought_list)
-            if stock:
-                print_alert('Sell', price, mean, stock_strip, days_ago)
-                print('Bought {} shares on {} at {}'.format(shares, date, bought_at.strftime('%Y-%m-%d')))
+            if not stock:
+                print_alert('Buy', price, mean, stock_strip, std_dev)
 
 
 def analyze_portfolio(bought_list):
     for row in bought_list:
         stock, shares, bought_at, date = get_bought_info(row[0], bought_list)
-        price, mean, std_dev_range, days_ago = analyze_stock(stock)
+        price, mean, std_dev = analyze_stock(stock)
         if price == -1:
             continue
 
-        gain_loss_per_share = bought_at - price
+        gain_loss_per_share = price - bought_at
         today = datetime.datetime.today()
+
         print(stock)
-        print('Margin: {:.2f}'.format(gain_loss_per_share))
-        print('Lost/gained {:.2f} over {} days'.format(gain_loss_per_share * int(row[1]),
-                                                   abs((today - date).days)))
-        print('Price: {:.2f}, Mean: {:.2f}, Difference {}%'.format(price, mean, get_perc_diff(mean, price)))
-        print('Last within range {} days ago\n'.format(days_ago))
+        print('Bought {} shares on {} at {}. Margin: {:.2f}'.format(shares, date, bought_at, gain_loss_per_share))
+        print('Lost/gained {:.2f} over {} days'.format(gain_loss_per_share * shares,
+                                                       abs((today - date).days)))
+        if price > mean - std_dev * SELL_MULTIPLIER:
+            print_alert('Sell', price, mean, stock, std_dev)
+        else:
+            print('Price: {:.2f}, Mean: {:.2f}, Difference {}%'.format(price, mean, get_perc_diff(mean, price)))
+            print('Sell at {:.2f}'.format(mean - std_dev * SELL_MULTIPLIER))
+        print('\n')
 
 
 bought_list = list(csv.reader(open('bought.txt')))
 stock_list = list(csv.reader(open('stocks.txt')))
 
+print('Portfolio Analysis')
 analyze_portfolio(bought_list)
+
+print('Stock analysis')
 analyze_market(stock_list, bought_list)
 print('Done')
 
