@@ -2,15 +2,21 @@ from yahoo_fin.stock_info import *
 import datetime
 import csv
 
-BUY_MULTIPLIER = 1.8
+BUY_MULTIPLIER = 1.7
 SELL_MULTIPLIER = 1
 
 
 def calculate_mean(data_list):
     sum = 0
+    weight = 0
+    for x in range(len(data_list) + 1):
+        weight += x
+
+    i = 1;
     for val in data_list:
-        sum += val
-    return sum / len(data_list)
+        sum += val * i / weight
+        i += 1
+    return sum
 
 
 def get_bought_info(stock, bought_list):
