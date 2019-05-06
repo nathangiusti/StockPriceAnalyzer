@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="25fc2416-52d9-42da-a6e3-d19b3bfe664e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StockAnalyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/StockAnalyzer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bought.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bought.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stocks.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stocks.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,52 +17,63 @@
     <session id="-1651608647">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.13" value="1" />
+          <entry key="project.open.time.26" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="7" />
-          <entry key="txt" value="8" />
+          <entry key="py" value="8" />
+          <entry key="txt" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="8" />
-          <entry key="Python" value="7" />
+          <entry key="PLAIN_TEXT" value="9" />
+          <entry key="Python" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="3965" />
-          <entry key="txt" value="94" />
+          <entry key="py" value="4029" />
+          <entry key="txt" value="99" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="94" />
-          <entry key="Python" value="3965" />
+          <entry key="PLAIN_TEXT" value="99" />
+          <entry key="Python" value="4029" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StockAnalyzer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1071">
-              <caret line="18" column="14" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
+            <state relative-caret-position="1173">
+              <caret line="71" selection-start-line="71" selection-end-line="71" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
-                <marker date="1556672004150" expanded="true" signature="366:594" ph="..." />
-                <marker date="1556672004150" expanded="true" signature="664:669" ph="..." />
-                <marker date="1556672004150" expanded="true" signature="1488:1907" ph="..." />
-                <marker date="1556672004150" expanded="true" signature="2351:3476" ph="..." />
+                <marker date="1556921690418" expanded="true" signature="364:592" ph="..." />
+                <marker date="1556921690418" expanded="true" signature="662:667" ph="..." />
+                <marker date="1556921690418" expanded="true" signature="1486:1905" ph="..." />
+                <marker date="1556921690418" expanded="true" signature="2453:3578" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bought.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -68,8 +81,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stocks.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="4" selection-start-line="3" selection-end-line="3" selection-end-column="4" />
+            <state relative-caret-position="218">
+              <caret line="2168" column="4" selection-start-line="2168" selection-start-column="4" selection-end-line="2168" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -94,6 +107,8 @@
       <find>analyze</find>
       <find>days_ago</find>
       <find>std_dev_r</find>
+      <find>BF.</find>
+      <find>BH</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -102,9 +117,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/StockAnalyzer.py" />
         <option value="$PROJECT_DIR$/stocks.txt" />
         <option value="$PROJECT_DIR$/bought.txt" />
-        <option value="$PROJECT_DIR$/StockAnalyzer.py" />
       </list>
     </option>
   </component>
@@ -118,7 +133,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -130,6 +144,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="RunDashboard">
@@ -196,14 +211,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="323" y="0" width="1604" height="1057" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21711366" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21711366" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30882353" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39899498" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39810926" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32922733" />
@@ -227,13 +243,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/Program Files/Python37/Lib/site-packages/yahoo_fin/stock_info.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/Program Files/Python37/Lib/site-packages/pandas/core/indexing.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="169">
@@ -248,31 +257,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stocks.txt">
+    <entry file="file://D:/Program Files/Python37/Lib/site-packages/yahoo_fin/stock_info.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="4" selection-start-line="3" selection-end-line="3" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bought.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="9" lean-forward="true" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
+        <state relative-caret-position="17">
+          <caret line="337" selection-start-line="337" selection-end-line="337" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/StockAnalyzer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1071">
-          <caret line="18" column="14" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
+        <state relative-caret-position="1173">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
-            <marker date="1556672004150" expanded="true" signature="366:594" ph="..." />
-            <marker date="1556672004150" expanded="true" signature="664:669" ph="..." />
-            <marker date="1556672004150" expanded="true" signature="1488:1907" ph="..." />
-            <marker date="1556672004150" expanded="true" signature="2351:3476" ph="..." />
+            <marker date="1556921690418" expanded="true" signature="364:592" ph="..." />
+            <marker date="1556921690418" expanded="true" signature="662:667" ph="..." />
+            <marker date="1556921690418" expanded="true" signature="1486:1905" ph="..." />
+            <marker date="1556921690418" expanded="true" signature="2453:3578" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stocks.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="2168" column="4" selection-start-line="2168" selection-start-column="4" selection-end-line="2168" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bought.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
         </state>
       </provider>
     </entry>

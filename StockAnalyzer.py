@@ -2,7 +2,7 @@ from yahoo_fin.stock_info import *
 import datetime
 import csv
 
-BUY_MULTIPLIER = 1.7
+BUY_MULTIPLIER = 2
 SELL_MULTIPLIER = 1
 
 
@@ -70,7 +70,11 @@ def analyze_stock(stock):
 def analyze_market(stock_list, bought_list):
     for stock in stock_list:
         stock_strip = stock[0].strip()
-        price, mean, std_dev = analyze_stock(stock_strip)
+        try:
+            price, mean, std_dev = analyze_stock(stock_strip)
+        except:
+            print("No data for {}".format(stock))
+            continue
 
         if price < mean - std_dev * BUY_MULTIPLIER:
             stock, shares, bought_at, date = get_bought_info(stock_strip, bought_list)
