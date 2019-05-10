@@ -109,15 +109,14 @@ def analyze_market(stock_list, bought_list):
 
     print("Started analysis at", start_time)
     for stock in stock_list:
-        stock_strip = stock[0].strip()
-        price, mean, std_dev = analyze_stock(stock_strip)
-        if price == -1:
-            unfound_stocks.append(stock)
-            continue
+        if stock not in bought_list:
+            stock_strip = stock[0].strip()
+            price, mean, std_dev = analyze_stock(stock_strip)
+            if price == -1:
+                unfound_stocks.append(stock)
+                continue
 
-        if price < mean - std_dev * BUY_MULTIPLIER:
-            stock, shares, bought_at, date = get_bought_info(stock_strip, bought_list)
-            if not stock:
+            if price < mean - std_dev * BUY_MULTIPLIER:
                 stocks_to_buy.append(Stock(stock_strip, price, mean, std_dev, get_perc_diff(price + std_dev, mean)))
                 num_stocks += 1
 
