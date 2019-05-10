@@ -35,8 +35,8 @@ def calculate_mean(data_list):
 def get_bought_info(stock, bought_list):
     for entry in bought_list:
         if entry[0] == stock:
-            return entry[0].strip(), int(entry[1]), float(entry[2]), datetime.datetime.strptime(entry[3], "%Y-%m-%d")
-    return "", 0, 0, datetime.datetime.today()
+            return entry[0].strip(), int(entry[1]), float(entry[2])
+    return "", 0, 0
 
 
 def calculate_std_dev(data_list):
@@ -150,7 +150,7 @@ def analyze_market(stock_list, bought_list):
 
 def analyze_portfolio(bought_list):
     for row in bought_list:
-        stock, shares, bought_at, date = get_bought_info(row[0], bought_list)
+        stock, shares, bought_at = get_bought_info(row[0], bought_list)
         price, mean, std_dev = analyze_stock(stock)
         if price == -1:
             continue
@@ -159,9 +159,8 @@ def analyze_portfolio(bought_list):
         today = datetime.datetime.today()
 
         print(stock)
-        print('Bought {} shares on {} at {}. Margin: {:.2f}'.format(shares, date, bought_at, gain_loss_per_share))
-        print('Lost/gained {:.2f} over {} days'.format(gain_loss_per_share * shares,
-                                                       abs((today - date).days)))
+        print('Bought {} shares at {}. Margin: {:.2f}'.format(shares, bought_at, gain_loss_per_share))
+        print('Lost/gained {:.2f} '.format(gain_loss_per_share * shares))
         if price > mean - std_dev * SELL_MULTIPLIER:
             print_alert('Sell', price, mean, stock, std_dev)
         else:
