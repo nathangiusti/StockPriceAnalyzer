@@ -1,9 +1,22 @@
 from yahoo_fin.stock_info import *
 import datetime
 import csv
+import sys
 
 BUY_MULTIPLIER = 2
 SELL_MULTIPLIER = 1
+STOCK_RETRY = 3
+
+ORDER_CAP = 1000
+
+
+class Stock:
+    def __init__(self, ticker, price, mean, std_dev, margin):
+        self.ticker = ticker
+        self.price = price
+        self.mean = mean
+        self.std_dev = std_dev
+        self.margin = margin
 
 
 def calculate_mean(data_list):
@@ -12,7 +25,7 @@ def calculate_mean(data_list):
     for x in range(len(data_list) + 1):
         weight += x
 
-    i = 1;
+    i = 1
     for val in data_list:
         sum += val * i / weight
         i += 1
@@ -48,38 +61,91 @@ def get_perc_diff(val1, val2):
     return int((abs(val1 - val2) / (val1 + val2) / 2) * 100)
 
 
-def print_alert(buy_sell, price, mean, stock_strip, std_dev):
-    print('{} alert for {}'.format(buy_sell, stock_strip))
-    print('Price: {:.2f}, Mean: {:.2f}, Difference {}%'.format(price, mean, get_perc_diff(price, mean)))
-    print('Price + std_dev: {:.2f}, Difference {}%'.format(price + std_dev, get_perc_diff(price + std_dev, mean)))
+def print_alert(stock):
+    print('Buy alert for {}'.format(stock.ticker))
+    print('Price: {:.2f}, Mean: {:.2f}'.format(stock.price, stock.mean))
+    print('Price + std_dev: {:.2f}, Difference {}%'.format(stock.price + stock.std_dev, stock.margin))
+    print('Buy {} shares'.format(int(ORDER_CAP / stock.price)))
+    print()
 
 
 def analyze_stock(stock):
-    stock_data = get_data(
-        stock,
-        start_date=(datetime.datetime.today() - datetime.timedelta(weeks=52)).strftime('%m/%d/%Y'),
-        end_date=datetime.datetime.today().strftime('%m/%d/%Y')
-    )
+    retry = 0
+    price = -1
+    while retry < STOCK_RETRY:
+        try:
+            stock_data = get_data(
+                stock,
+                start_date=(datetime.datetime.today() - datetime.timedelta(weeks=52)).strftime('%m/%d/%Y'),
+                end_date=datetime.datetime.today().strftime('%m/%d/%Y')
+            )
+            price = get_live_price(stock)
+            break
+        except:
+            retry += 1
+            if retry == STOCK_RETRY:
+                return -1,0,0
+
     adj_closes = stock_data.loc[:, 'adjclose'].tolist()
     mean = calculate_mean(adj_closes)
     std_dev = calculate_std_dev(adj_closes)
-    price = get_live_price(stock)
     return price, mean, std_dev
 
 
+def get_time_str(seconds):
+    hours = str(int(seconds / 3600)).zfill(1)
+    minutes = '{}'.format(int(seconds % 3600 / 60)).zfill(2)
+    seconds = str(seconds % 60).zfill(2)
+    return '{}:{}:{}'.format(hours, minutes, seconds)
+
+
 def analyze_market(stock_list, bought_list):
+    unfound_stocks = []
+    stocks_to_buy = []
+    i = 0
+    num_stocks = 0
+    start_time = datetime.datetime.now()
+    stock_list_len = len(stock_list)
+
+    print("Started analysis at", start_time)
     for stock in stock_list:
         stock_strip = stock[0].strip()
-        try:
-            price, mean, std_dev = analyze_stock(stock_strip)
-        except:
-            print("No data for {}".format(stock))
+        price, mean, std_dev = analyze_stock(stock_strip)
+        if price == -1:
+            unfound_stocks.append(stock)
             continue
 
         if price < mean - std_dev * BUY_MULTIPLIER:
             stock, shares, bought_at, date = get_bought_info(stock_strip, bought_list)
             if not stock:
-                print_alert('Buy', price, mean, stock_strip, std_dev)
+                stocks_to_buy.append(Stock(stock_strip, price, mean, std_dev, get_perc_diff(price + std_dev, mean)))
+                num_stocks += 1
+
+        i += 1
+        perc_done = (i / stock_list_len) * 100
+        perc_done_str = '{:.2f}%'.format(perc_done)
+
+        seconds_elapsed = int((datetime.datetime.now() - start_time).total_seconds())
+        time_elapsed_str = get_time_str(seconds_elapsed)
+
+        total_run_time = int(100 * seconds_elapsed / perc_done)
+        total_run_time_str = get_time_str(total_run_time)
+
+        seconds_left = total_run_time - seconds_elapsed
+        time_left_str = get_time_str(seconds_left)
+
+        sys.stdout.write("\r{} Running Time: {} Finish Time: {} Time left: {} Stocks Analyzed: {}/{} Stocks found: {}"
+                         .format(perc_done_str, time_elapsed_str, total_run_time_str, time_left_str, i, stock_list_len, num_stocks))
+    print()
+
+    stocks_to_buy.sort(key=lambda x: x.margin, reverse=True)
+    for stock in stocks_to_buy:
+        print_alert(stock)
+
+    if unfound_stocks:
+        print("No data for following stocks")
+        for stock in unfound_stocks:
+            print("{}".format(stock))
 
 
 def analyze_portfolio(bought_list):
